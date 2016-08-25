@@ -1,0 +1,9 @@
+	<% partsData.forEach(function(data){ %>
+		<div class="well col-xs-1">
+				<br>
+			<img src="<%=part_img_url %>.jpg"  class="img-responsive" alt="<%= data.theme1 %>" style=" display:inline-block;max-height: 200px;">
+			<img src="<%=element_img_url %>.jpg"  class="img-responsive" alt="<%= data.theme1 %>" style=" display:inline-block;max-height: 200px;">
+			<p> <%=qty%> <%=color_name%> <%=part_name%></p>
+	</div>
+	<br>
+	<% }); %>

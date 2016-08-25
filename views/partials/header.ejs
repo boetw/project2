@@ -1,0 +1,23 @@
+<div class="navbar navbar-default navbar-fixed-top"  style="border:0px solid black;background-color:rgba(180,180,180, 0.2)">
+  <button type="button" class="btn btn-lg btn-default navbar-btn dropdown-toggle col-xs-9 col-md-2 col-xs-offset-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Lego Thingy
+  <span class="caret"></span>
+  <span class="sr-only">Toggle Dropdown</span>
+  </button>
+  <ul class="dropdown-menu">
+    <li><a href="/">Search</a></li>
+    <li><a href="/results">Results</a></li>
+    <li role="separator" class="divider"></li>
+    <% if (!currentUser){%>
+    <li><a href="/auth/signup">Signup</a></li>
+    <li><a href="/auth/login">Login</a></li>
+     <%}%>
+    <% if (currentUser){%>
+    <li><a href="/auth/logout">Logout</a></li>
+    <li><a href="/profile">Profile</a></li>
+    <%}%>
+  </ul>
+  <% if (currentUser){%>
+  <p class="text-right col-xs-4 col-xs-offset-7">
+        <strong>User:</strong> <%- JSON.stringify(currentUser.name) %>
+      </p><%}%>
+</div>
