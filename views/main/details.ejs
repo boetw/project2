@@ -11,10 +11,9 @@
 	<% }); %>
 	<% if (currentUser){%>
 		<div class="col-xs-12">
-		<input class="btn btn-primary" type="Submit" value="OWN">
-		<input class="btn btn-primary" type="submit" value="WANT">
-		<div class="btn btn-success">OWNED</div>
-		<div class="btn btn-success">ON WISHLIST</div>
+		// <input class="btn btn-primary" type="Submit" action="/list/own" setnum="<%=data.set_id.toLowerCase() %>" setname="<%=data.descr %>" value="OWN">
+
+		<form action="/list/want" id="<%=data.set_id.toLowerCase() %>" name="<%=data.descr %>"><input class="btn btn-primary" type="submit" id="<%=data.set_id.toLowerCase() %>" name="<%=data.descr %>" value="WANT"></form>
 
 		</div>
 		<%}%>

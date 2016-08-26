@@ -40,7 +40,12 @@ module.exports = function(sequelize, DataTypes) {
     },
     classMethods: {
       associate: function(models) {
-        // associations can be defined here
+        models.user.belongsToMany(models.set, {
+          through: "userset"
+        });
+        models.user.belongsToMany(models.set, {
+          through: "wishlist"
+        });
       }
     },
     instanceMethods: {

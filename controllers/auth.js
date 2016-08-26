@@ -3,6 +3,17 @@ var db = require('../models');
 var passport = require('../config/ppConfig');
 var router = express.Router();
 
+router.get('/login', function(req, res) {
+  res.render('auth/login');
+});
+
+router.post('/login', passport.authenticate('local', {
+  successRedirect: '/',
+  failureRedirect: '/auth/login',
+  failureFlash: 'Invalid username and/or password',
+  successFlash: 'You have logged in'
+}));
+
 router.get('/signup', function(req, res) {
   res.render('auth/signup');
 });
@@ -33,17 +44,6 @@ router.post('/signup', function(req, res) {
     res.redirect('/auth/signup');
   });
 });
-
-router.get('/login', function(req, res) {
-  res.render('auth/login');
-});
-
-router.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
-  failureRedirect: '/auth/login',
-  failureFlash: 'Invalid username and/or password',
-  successFlash: 'You have logged in'
-}));
 
 router.get('/logout', function(req, res) {
   req.logout();

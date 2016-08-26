@@ -7,6 +7,7 @@ var passport = require('./config/ppConfig');
 var session = require('express-session');
 var flash = require('connect-flash');
 var isLoggedIn = require('./middleware/isLoggedIn');
+var fs = require('fs');
 var app = express();
 var lastSearch;
 
@@ -17,16 +18,17 @@ app.use(bodyParser.urlencoded({
 	extended: false
 }));
 app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: true
-}));app.use(flash());
+	secret: process.env.SESSION_SECRET,
+	resave: false,
+	saveUninitialized: true
+}));
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(function(req, res, next) {
-  res.locals.currentUser = req.user;
-  res.locals.alerts = req.flash();
-  next();
+	res.locals.currentUser = req.user;
+	res.locals.alerts = req.flash();
+	next();
 });
 
 
@@ -56,11 +58,11 @@ app.get('/raw', function(req, res) {
 });
 
 app.get('/results', function(req, res) {
-
 	var searchTerm = req.query.searchTerm;
-	if (!searchTerm){
+	if (!searchTerm) {
 		searchTerm = lastSearch;
-	} else { lastSearch = searchTerm;
+	} else {
+		lastSearch = searchTerm;
 	};
 	var qs = {
 		query: searchTerm,
@@ -80,6 +82,26 @@ app.get('/results', function(req, res) {
 				searchTerm: searchTerm
 			});
 		}
+	});
+});
+
+app.get('/stuff', function(req, res) {
+
+	var fileContents = fs.readFileSync('./data.json');
+	var dataObj = JSON.parse(fileContents);
+	res.render("main/stuff", {
+		results: dataObj.results,
+		searchTerm: "pirates"
+	});
+});
+
+app.get('/profiled', function(req, res) {
+
+	var fileContents = fs.readFileSync('./data.json');
+	var dataObj = JSON.parse(fileContents);
+	res.render("main/profiled", {
+		results: dataObj.results,
+		searchTerm: "pirates"
 	});
 });
 
@@ -104,9 +126,39 @@ app.get('/details/:id', function(req, res) {
 	});
 });
 
-app.get('/profile', isLoggedIn, function(req,res){
-	res.render("main/profile")
-})
+// app.post('list/own', function(req,res){
+//   db.user.findOne({where: {id: req.body.user}}).then(function(user){
+//       user.createSet({
+//         setnum: req.body.setnum,
+//         setname: req.body.setname
+//       }).then(function(post){
+//         console.log(post.get());
+//         res.flash("Added to Owned Sets");
+//       });
+//   })
+// });
+
+app.post('list/want', function(req, res) {
+	db.user.findOne({
+		where: {
+			id: req.body.user
+		}
+	}).then(function(user) {
+		user.createSet({
+			setnum: req.body.id,
+			setname: req.body.name
+		}).then(function(post) {
+			console.log(post.get());
+			res.flash("Added to Wishlist");
+		});
+	})
+});
+
+app.get('/profile', isLoggedIn, function(req, res) {
+	db.user.findAll().then(function(users) {
+		res.render("main/profile");
+	});
+});
 // app.get('/parts', function(req, res) {
 // 	var qs = {
 // 		set: '40158-1',
@@ -126,6 +178,7 @@ app.get('/profile', isLoggedIn, function(req,res){
 // 					}
 // 	});
 // });
+
 
 app.use('/auth', require('./controllers/auth'));
 
