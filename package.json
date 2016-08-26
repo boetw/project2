@@ -20,7 +20,7 @@
     "url": "https://github.com/boetw/project2/issues"
   },
   "homepage": "https://github.com/boetw/project2#readme",
-    "devDependencies": {
+  "devDependencies": {
     "babel-eslint": "^6.0.4",
     "chai": "^3.5.0",
     "csslint": "^0.10.0",
@@ -45,8 +45,9 @@
     "passport-local": "^1.0.0",
     "pg": "^5.0.0",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^3.23.3",
     "request": "^2.74.0",
+    "sequelize": "^3.23.3",
+    "sequelize-cli": "^2.4.0",
     "sessions": "0.0.2-7"
   }
 }
